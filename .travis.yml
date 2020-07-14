@@ -4,6 +4,8 @@ cache: false
 env:
 - URL=https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
 before_install:
+- openssl aes-256-cbc -K $encrypted_79a2f6093848_key -iv $encrypted_79a2f6093848_iv
+  -in assets/server.key.enc -out assets/server.key -d
 - export SFDX_AUTOUPDATE_DISABLE=false
 - export SFDX_USE_GENERIC_UNIX_KEYCHAIN=true
 - export SFDX_DOMAIN_RETRY=300
@@ -15,8 +17,9 @@ before_install:
 - export PATH=./sfdx/$(pwd):$PATH
 - sfdx --version
 - sfdx plugins --core
-- sfdx force:auth:jwt:grant --clientid 3MVG9n_HvETGhr3AinNy1BHFWs3Qu9byPxV4V5yBvncpua5iWl2I3N8AWYaZWqvkTsiFjwrCUbF87nCV_.aVx --jwtkeyfile /rp-sf/sfdx-travisci/tree/master/assets/server.key
-  --username rpermana@resilient-shark-qg22qr.com --setdefaultdevhubusername -a HubOrg
+- sfdx force:auth:jwt:grant --clientid 3MVG9n_HvETGhr3AinNy1BHFWs3Qu9byPxV4V5yBvncpua5iWl2I3N8AWYaZWqvkTsiFjwrCUbF87nCV_.aVx
+  --jwtkeyfile /rp-sf/sfdx-travisci/tree/master/assets/server.key --username rpermana@resilient-shark-qg22qr.com
+  --setdefaultdevhubusername -a HubOrg
 script:
 - sfdx force:org:create -v HubOrg -s -f config/project-scratch-def.json -a ciorg --wait
   3
